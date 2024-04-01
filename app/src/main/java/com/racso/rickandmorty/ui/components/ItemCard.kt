@@ -1,12 +1,18 @@
 package com.racso.rickandmorty.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,27 +44,31 @@ fun ItemCard(item: Result) {
             AsyncImage(model = item.image, contentDescription = "")
             Column(
                 modifier = Modifier.padding(5.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically) {
                     Text(item.name, style = MaterialTheme.typography.titleMedium)
-                    Button(onClick = { showDetail = !showDetail }) {
+                    IconButton(onClick = { showDetail = !showDetail }) {
                         if (showDetail){
-                            Text(text = "Hide Detail")
+                            Icon(Icons.Filled.KeyboardArrowUp, contentDescription = "", tint = MaterialTheme.colorScheme.primary)
                         }else{
-                            Text(text = "Show Detail")
+                            Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "", tint = MaterialTheme.colorScheme.primary)
                         }
                     }
                 }
-                if (showDetail){
-                    Text(text = "Status: ${item.status}")
-                    Text(text = "Species: ${item.species}")
-                    Text(text = "Type: ${item.type}")
-                    Text(text = "Gender: ${item.gender}")
-                    Text(text = "Origin: ${item.origin.name}")
-                    Text(text = "Origin: ${item.location.name}")
+                AnimatedVisibility(showDetail){
+                    Column(
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = "Status: ${item.status}")
+                        Text(text = "Species: ${item.species}")
+                        Text(text = "Type: ${item.type}")
+                        Text(text = "Gender: ${item.gender}")
+                        Text(text = "Origin: ${item.origin.name}")
+                        Text(text = "Location: ${item.location.name}")
+                    }
                 }
             }
         }
